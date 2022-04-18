@@ -1,8 +1,6 @@
 import logging
-from datetime import timedelta
 from discord import ActivityType, Status
 
-import nextcord
 from nextcord.ext import commands
 from nextcord.member import Member
 

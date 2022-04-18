@@ -1,5 +1,4 @@
 import logging
-import nextcord
 from cogs.stats import Stats
 from nextcord.ext import commands, tasks
 from config import IMPORTANT_CHANNELS

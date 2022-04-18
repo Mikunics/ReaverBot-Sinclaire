@@ -3,7 +3,8 @@ COMMAND_PREFIX = "$"
 # Cogs in use
 ACTIVE_COGS = [
     "cogs.stats",
-    "cogs.tasks"  
+    "cogs.tasks",
+    "cogs.pin"  
 ]
 
 # Hard Coded Channels used (user-friendly-name, Prefix, channel-id, server-id)
