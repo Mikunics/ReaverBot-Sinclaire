@@ -46,6 +46,7 @@ class Pins(commands.Cog):
                 await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" + "\n`{}`".format(footer), files = attachlist) #type:ignore
             else:
                 await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" + "\n`{}`".format(footer))
+        await ctx.message.delete()
 
 def setup(bot):
     bot.add_cog(Pins(bot))
