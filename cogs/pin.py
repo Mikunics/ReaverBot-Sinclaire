@@ -22,7 +22,7 @@ class Pins(commands.Cog):
     @commands.has_role("Mod")
     @commands.command()
     async def pin(self, ctx:commands.Context, channel: Channel, messageID: int, footer = None):
-        '''Pins a selected message given by ID to a selected channel, you may add an optional footer as an extra argument'''
+        '''Pins a selected message given by ID to a selected channel, you may add an optional footer (must be enclosed with quotation marks if it contains a space) as an extra argument (Command must be invoked in the same channel as the original message)'''
         if ctx.guild is None:
             return
         msg = await ctx.fetch_message(messageID)
