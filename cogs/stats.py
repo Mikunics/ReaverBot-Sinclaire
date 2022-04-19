@@ -29,7 +29,6 @@ class Filters():
     def filterNonBots(member:Member):
         return not member.bot
 
-
 class Stats(commands.Cog):
     def  __init__(self, bot:commands.Bot):
         self.bot = bot
@@ -41,7 +40,7 @@ class Stats(commands.Cog):
         if(ctx.guild is None):
             return
         membersInServer = ctx.guild.members
-        MembersPlayingReaver = list(filter(self.filterPlayingReaver,membersInServer))
+        MembersPlayingReaver = list(filter(Filters.filterPlayingReaver,membersInServer))
         numPlayingReaver = len(MembersPlayingReaver)
         channel = STATS_CHANNELS[0] # refers to playing reaver channel
         target = ctx.guild.get_channel(channel[2])
@@ -57,7 +56,7 @@ class Stats(commands.Cog):
         if(ctx.guild is None):
             return
         membersInServer = ctx.guild.members
-        MembersOnline = list(filter(self.filterOnlineMembers,membersInServer))
+        MembersOnline = list(filter(Filters.filterOnlineMembers,membersInServer))
         numOnline = len(MembersOnline)
         channel = STATS_CHANNELS[1] # refers to members
         target = ctx.guild.get_channel(channel[2])
@@ -73,7 +72,7 @@ class Stats(commands.Cog):
         if(ctx.guild is None):
             return
         membersInServer = ctx.guild.members
-        realMembers = list(filter(self.filterNonBots,membersInServer))
+        realMembers = list(filter(Filters.filterNonBots,membersInServer))
         numRealMembers = len(realMembers)
         channel = STATS_CHANNELS[2] # refers to members channel
         target = ctx.guild.get_channel(channel[2])
@@ -95,7 +94,7 @@ class Stats(commands.Cog):
         if(ctx.guild is None):
             return
         membersInServer = ctx.guild.members
-        onlineMembersInServer = list(filter(self.filterOnlineMembers,membersInServer))
+        onlineMembersInServer = list(filter(Filters.filterOnlineMembers,membersInServer))
         await ctx.send("There is/are currently {} user/s online in the server".format(len(onlineMembersInServer)))
 
     @commands.command()
@@ -104,7 +103,7 @@ class Stats(commands.Cog):
         if(ctx.guild is None):
             return
         membersInServer = ctx.guild.members
-        MembersPlayingReaver = list(filter(self.filterPlayingReaver,membersInServer))
+        MembersPlayingReaver = list(filter(Filters.filterPlayingReaver,membersInServer))
         await ctx.send("There is/are currently {} user/s playing REAVER in the server".format(len(MembersPlayingReaver)))
 
 def setup(bot):
