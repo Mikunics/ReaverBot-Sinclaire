@@ -1,6 +1,6 @@
 import logging
 from nextcord.ext import commands
-from stats import Filters
+from cogs.stats import Filters
 from config import STATS_CHANNELS
 
 class Events(commands.Cog):
@@ -29,6 +29,6 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         await self.updateMembers()
-        
+
 def setup(bot):
     bot.add_cog(Events(bot))
