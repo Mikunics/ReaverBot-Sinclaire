@@ -1,8 +1,10 @@
 import logging
 
+import nextcord
+
 from cogs.stats import Filters
 from nextcord.ext import commands, tasks
-from config import STATS_CHANNELS
+from config import STATS_CHANNELS, SERVER_ROLES
 
 class Tasks(commands.Cog):
     def __init__(self, bot:commands.Bot):
@@ -46,6 +48,43 @@ class Tasks(commands.Cog):
         logging.info("Running chron")
         await self.PlayingReaverTask()
         await self.UpdateOnline()
+
+    @commands.Cog.listener()
+    async def on_presence_update(self, before:nextcord.Member, after:nextcord.Member):
+        # Gives and Takes playing Reaver Role
+        if(Filters.filterPlayingReaver(before) == False and Filters.filterPlayingReaver(after) == True):
+            target = SERVER_ROLES[0]
+            targetGuild = self.bot.get_guild(target[2])
+
+            if targetGuild is None:
+                return
+
+            playingReaverRole = nextcord.utils.get(targetGuild.roles, id = target[1])
+
+            if playingReaverRole is None:
+                return
+
+            await after.add_roles(playingReaverRole, reason = "He is currently playing Reaver!")
+            return
+
+        elif(Filters.filterPlayingReaver(before) == True and Filters.filterPlayingReaver(after) == False):
+            target = SERVER_ROLES[0]
+            targetGuild = self.bot.get_guild(target[2])
+
+            if targetGuild is None:
+                return
+
+            playingReaverRole = nextcord.utils.get(targetGuild.roles, id = target[1])
+
+            if playingReaverRole is None:
+                return
+
+            await after.remove_roles(playingReaverRole, reason = "He is no longer playing Reaver")
+            return
+
+        else:
+            return
+
 
 def setup(bot):
     bot.add_cog(Tasks(bot))
