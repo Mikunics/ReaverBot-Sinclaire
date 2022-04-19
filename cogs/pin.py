@@ -1,19 +1,18 @@
-import discord
-from discord import TextChannel
-
 import nextcord
+
+from nextcord import TextChannel
 from nextcord.ext import commands
 
-from config import IMPORTANT_CHANNELS
+from config import STATS_CHANNELS
 
 class Channel(commands.Converter):
     async def convert(self, ctx, arg):
         arg = str(arg)
         if arg.find("#") != -1:
             arg = arg.strip("<>#")
-            return discord.utils.get(ctx.guild.channels, id = int(arg))
+            return nextcord.utils.get(ctx.guild.channels, id = int(arg))
         else:
-            return discord.utils.get(ctx.guild.channels, name = arg)
+            return nextcord.utils.get(ctx.guild.channels, name = arg)
 
 class Pins(commands.Cog):
     def  __init__(self, bot:commands.Bot):

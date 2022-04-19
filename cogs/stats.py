@@ -1,15 +1,12 @@
 import logging
-from discord import ActivityType, Status
 
+from nextcord import ActivityType, Status
 from nextcord.ext import commands
 from nextcord.member import Member
 
-from config import IMPORTANT_CHANNELS
+from config import STATS_CHANNELS
 
-class Stats(commands.Cog):
-    def  __init__(self, bot:commands.Bot):
-        self.bot = bot
-
+class Filters():
     @staticmethod
     def filterOnlineMembers(member:Member):
         if member.bot:
@@ -28,6 +25,15 @@ class Stats(commands.Cog):
         else:
             return False
 
+    @staticmethod
+    def filterNonBots(member:Member):
+        return not member.bot
+
+
+class Stats(commands.Cog):
+    def  __init__(self, bot:commands.Bot):
+        self.bot = bot
+
     @commands.has_role("Mod")
     @commands.command()
     async def updatePlayingReaver(self, ctx:commands.Context):
@@ -37,10 +43,10 @@ class Stats(commands.Cog):
         membersInServer = ctx.guild.members
         MembersPlayingReaver = list(filter(self.filterPlayingReaver,membersInServer))
         numPlayingReaver = len(MembersPlayingReaver)
-        channel = IMPORTANT_CHANNELS[0] # refers to playing reaver channel
+        channel = STATS_CHANNELS[0] # refers to playing reaver channel
         target = ctx.guild.get_channel(channel[2])
         if(target is None):
-            logging.error("Playing Reaver Channel not found")
+            logging.error("Playing Reaver channel not found")
             return
         await target.edit(name = channel[1].format(numPlayingReaver)) #type:ignore
 
@@ -53,12 +59,28 @@ class Stats(commands.Cog):
         membersInServer = ctx.guild.members
         MembersOnline = list(filter(self.filterOnlineMembers,membersInServer))
         numOnline = len(MembersOnline)
-        channel = IMPORTANT_CHANNELS[1] # refers to members online
+        channel = STATS_CHANNELS[1] # refers to members
         target = ctx.guild.get_channel(channel[2])
         if(target is None):
-            logging.error("Members Online Channel not found")
+            logging.error("Members online channel not found")
             return
         await target.edit(name = channel[1].format(numOnline)) #type:ignore
+
+    @commands.has_role("Mod")
+    @commands.command()
+    async def updateMembers(self, ctx:commands.Context):
+        """Update stats channel of members in server"""
+        if(ctx.guild is None):
+            return
+        membersInServer = ctx.guild.members
+        realMembers = list(filter(self.filterNonBots,membersInServer))
+        numRealMembers = len(realMembers)
+        channel = STATS_CHANNELS[2] # refers to members channel
+        target = ctx.guild.get_channel(channel[2])
+        if(target is None):
+            logging.error("Members channel not found")
+            return
+        await target.edit(name = channel[1].format(numRealMembers)) #type:ignore
 
 
     @commands.command()

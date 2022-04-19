@@ -1,7 +1,8 @@
 import logging
-from cogs.stats import Stats
+
+from cogs.stats import Filters
 from nextcord.ext import commands, tasks
-from config import IMPORTANT_CHANNELS
+from config import STATS_CHANNELS
 
 class Tasks(commands.Cog):
     def __init__(self, bot:commands.Bot):
@@ -11,12 +12,12 @@ class Tasks(commands.Cog):
 
     async def PlayingReaverTask(self):
         """Update stats channel of people playing Reaver chronically"""
-        channel = IMPORTANT_CHANNELS[0]
+        channel = STATS_CHANNELS[0]
         guildtarget = self.bot.get_guild(channel[3])
         if(guildtarget is None):
             return
         membersInServer = guildtarget.members
-        MembersPlayingReaver = list(filter(Stats.filterPlayingReaver,membersInServer))
+        MembersPlayingReaver = list(filter(Filters.filterPlayingReaver,membersInServer))
         numPlayingReaver = len(MembersPlayingReaver)
         target = guildtarget.get_channel(channel[2])
         if(target is None):
@@ -26,12 +27,12 @@ class Tasks(commands.Cog):
 
     async def UpdateOnline(self):
         """Update stats channel of people online"""
-        channel = IMPORTANT_CHANNELS[1]
+        channel = STATS_CHANNELS[1]
         guildtarget = self.bot.get_guild(channel[3])
         if(guildtarget is None):
             return
         membersInServer = guildtarget.members
-        MembersOnline = list(filter(Stats.filterOnlineMembers,membersInServer))
+        MembersOnline = list(filter(Filters.filterOnlineMembers,membersInServer))
         numOnline = len(MembersOnline)
         target = guildtarget.get_channel(channel[2])
         if(target is None):
