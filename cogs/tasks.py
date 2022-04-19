@@ -11,6 +11,19 @@ class Tasks(commands.Cog):
         self.bot = bot
         self.chron.start()
     
+    async def OffsetStat(self, channelID: int, serverID: int , offset: int):
+        """Changes a stat (in stat VC) by a certain offset"""
+        guild = nextcord.utils.get(self.bot.guilds, id = serverID)
+        if guild is None:
+            return
+        channel = nextcord.utils.get(guild.channels, id = channelID)
+        if channel is None:
+            return
+        splitChannelName = channel.name.split()
+        currentNumber = int(splitChannelName[1])
+        currentNumber += offset
+        await channel.edit(name = " ".join((splitChannelName[0],str(currentNumber)))) #type: ignore
+
 
     async def PlayingReaverTask(self):
         """Update stats channel of people playing Reaver chronically"""
@@ -65,6 +78,7 @@ class Tasks(commands.Cog):
                 return
 
             await after.add_roles(playingReaverRole, reason = "He is currently playing Reaver!")
+            await self.OffsetStat(STATS_CHANNELS[0][2], STATS_CHANNELS[0][3], 1)
             return
 
         elif(Filters.filterPlayingReaver(before) == True and Filters.filterPlayingReaver(after) == False):
@@ -80,6 +94,7 @@ class Tasks(commands.Cog):
                 return
 
             await after.remove_roles(playingReaverRole, reason = "He is no longer playing Reaver")
+            await self.OffsetStat(STATS_CHANNELS[0][2], STATS_CHANNELS[0][3], -1)
             return
 
         else:
