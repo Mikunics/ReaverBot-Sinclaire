@@ -4,7 +4,8 @@ import logging
 from typing import Dict, Tuple, Type, Any
 
 from nextcord.ext import commands
-from nextcord.abc import GuildChannel, Role
+from nextcord.abc import GuildChannel
+from nextcord.role import Role
 
 from config import STATS_CHANNELS, PRIMARY_SERVER, SERVER_ROLES
 
