@@ -5,9 +5,12 @@ from nextcord.ext import commands
 
 from config import STATS_CHANNELS
 
+from bot import ReaverBot
+
 class Channel(commands.Converter):
-    async def convert(self, ctx, arg):
+    async def convert(self, ctx: commands.Context, arg):
         arg = str(arg)
+        assert ctx.guild is not None
         if arg.find("#") != -1:
             arg = arg.strip("<>#")
             return nextcord.utils.get(ctx.guild.channels, id = int(arg))
@@ -15,7 +18,7 @@ class Channel(commands.Converter):
             return nextcord.utils.get(ctx.guild.channels, name = arg)
 
 class Pins(commands.Cog):
-    def  __init__(self, bot:commands.Bot):
+    def  __init__(self, bot:ReaverBot):
         self.bot = bot
 
     @commands.has_role("Mod")

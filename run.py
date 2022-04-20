@@ -2,6 +2,7 @@ import os, logging
 from config import COMMAND_PREFIX, ACTIVE_COGS
 from nextcord.ext import commands
 from nextcord import Intents
+from bot import ReaverBot
 
 from dotenv import load_dotenv
 
@@ -11,10 +12,10 @@ def main():
 
     logging.info("Loading environment")
     load_dotenv()
-    intents = Intents().all()
 
     logging.info("Instantiating Bot")
-    bot = commands.Bot(command_prefix= COMMAND_PREFIX, intents = intents)
+    intents = Intents().all()
+    bot = ReaverBot(command_prefix= COMMAND_PREFIX, intents = intents)
 
 
     logging.info("Loading cogs...")

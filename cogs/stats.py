@@ -6,6 +6,8 @@ from nextcord.member import Member
 
 from config import STATS_CHANNELS
 
+from bot import ReaverBot
+
 class Filters():
     @staticmethod
     def filterOnlineMembers(member:Member):
@@ -30,56 +32,41 @@ class Filters():
         return not member.bot
 
 class Stats(commands.Cog):
-    def  __init__(self, bot:commands.Bot):
+    def  __init__(self, bot:ReaverBot):
         self.bot = bot
 
     @commands.has_role("Mod")
     @commands.command()
     async def updatePlayingReaver(self, ctx:commands.Context):
         """Update stats channel of people playing Reaver"""
-        if(ctx.guild is None):
-            return
-        membersInServer = ctx.guild.members
-        MembersPlayingReaver = list(filter(Filters.filterPlayingReaver,membersInServer))
-        numPlayingReaver = len(MembersPlayingReaver)
-        channel = STATS_CHANNELS[0] # refers to playing reaver channel
-        target = ctx.guild.get_channel(channel[2])
-        if(target is None):
-            logging.error("Playing Reaver channel not found")
-            return
-        await target.edit(name = channel[1].format(numPlayingReaver)) #type:ignore
+        assert self.bot.ReaverGuild is not None
+        numPlayingReaver = len(list(filter(Filters.filterPlayingReaver,self.bot.ReaverGuild.members)))
+        target = self.bot.ReaverChannels["Playing Reaver"]
+        assert target is not None
+        await target[1].edit(name = target[0].format(numPlayingReaver)) #type:ignore
+        await ctx.send("Reaving channel has been updated")
 
     @commands.has_role("Mod")
     @commands.command()
     async def updateOnline(self, ctx:commands.Context):
         """Update stats channel of people online"""
-        if(ctx.guild is None):
-            return
-        membersInServer = ctx.guild.members
-        MembersOnline = list(filter(Filters.filterOnlineMembers,membersInServer))
-        numOnline = len(MembersOnline)
-        channel = STATS_CHANNELS[1] # refers to members
-        target = ctx.guild.get_channel(channel[2])
-        if(target is None):
-            logging.error("Members online channel not found")
-            return
-        await target.edit(name = channel[1].format(numOnline)) #type:ignore
+        assert self.bot.ReaverGuild is not None
+        numOnline = len(list(filter(Filters.filterOnlineMembers,self.bot.ReaverGuild.members)))
+        target = self.bot.ReaverChannels["Online"]
+        assert target is not None
+        await target[1].edit(name = target[0].format(numOnline)) #type:ignore
+        await ctx.send("Resting channel has been updated")
 
     @commands.has_role("Mod")
     @commands.command()
     async def updateMembers(self, ctx:commands.Context):
         """Update stats channel of members in server"""
-        if(ctx.guild is None):
-            return
-        membersInServer = ctx.guild.members
-        realMembers = list(filter(Filters.filterNonBots,membersInServer))
-        numRealMembers = len(realMembers)
-        channel = STATS_CHANNELS[2] # refers to members channel
-        target = ctx.guild.get_channel(channel[2])
-        if(target is None):
-            logging.error("Members channel not found")
-            return
-        await target.edit(name = channel[1].format(numRealMembers)) #type:ignore
+        assert self.bot.ReaverGuild is not None
+        numMembers = len(list(filter(Filters.filterNonBots,self.bot.ReaverGuild.members)))
+        target = self.bot.ReaverChannels["Members"]
+        assert target is not None
+        await target[1].edit(name = target[0].format(numMembers)) #type:ignore
+        await ctx.send("Reavers channel has been updated")
 
 
     @commands.command()
@@ -89,20 +76,26 @@ class Stats(commands.Cog):
         await ctx.send("Pong! {}".format(latency_in_ms))
 
     @commands.command()
+    async def members(self, ctx:commands.Context):
+        """Check amount of users in current server"""
+        assert self.bot.ReaverGuild is not None
+        membersInServer = self.bot.ReaverGuild.members
+        MembersInServer = list(filter(Filters.filterNonBots,membersInServer))
+        await ctx.send("There is/are currently {} user/s in the server".format(len(MembersInServer)))
+
+    @commands.command()
     async def online(self, ctx:commands.Context):
         """Check amount of online users in current server"""
-        if(ctx.guild is None):
-            return
-        membersInServer = ctx.guild.members
+        assert self.bot.ReaverGuild is not None
+        membersInServer = self.bot.ReaverGuild.members
         onlineMembersInServer = list(filter(Filters.filterOnlineMembers,membersInServer))
         await ctx.send("There is/are currently {} user/s online in the server".format(len(onlineMembersInServer)))
 
     @commands.command()
     async def playingReaver(self, ctx:commands.Context):
         """Check amount of online users in current server that are playing Reaver"""
-        if(ctx.guild is None):
-            return
-        membersInServer = ctx.guild.members
+        assert self.bot.ReaverGuild is not None
+        membersInServer = self.bot.ReaverGuild.members
         MembersPlayingReaver = list(filter(Filters.filterPlayingReaver,membersInServer))
         await ctx.send("There is/are currently {} user/s playing REAVER in the server".format(len(MembersPlayingReaver)))
 
