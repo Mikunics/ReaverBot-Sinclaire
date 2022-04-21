@@ -31,23 +31,21 @@ class Pins(commands.Cog):
         if not isinstance(channel, TextChannel):
             return
 
-        if footer is None:
-            if len(msg.attachments) == 1:
-                await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" , file = await msg.attachments[0].to_file()) #type:ignore
-            elif len(msg.attachments) > 1:
-                attachlist = [await attachment.to_file() for attachment in msg.attachments]
-                await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" , files = attachlist) #type:ignore
-            else:
-                await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" )
-            
+        formatString = "***Shared By** {author}*\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{content}\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+
+        msgContent = formatString.format(author = msg.author.mention, content = msg.content)
+
+        if footer is not None:
+            msgContent += "\n`{}`".format(footer)
+
+        if len(msg.attachments) == 1:
+            await channel.send(msgContent, file = await msg.attachments[0].to_file())
+        elif len(msg.attachments) > 1:
+            attachlist = [await attachment.to_file() for attachment in msg.attachments]
+            await channel.send(msgContent, files = attachlist)
         else:
-            if len(msg.attachments) == 1:
-                await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" + "\n`{}`".format(footer), file = await msg.attachments[0].to_file()) #type:ignore
-            elif len(msg.attachments) > 1:
-                attachlist = [await attachment.to_file() for attachment in msg.attachments]
-                await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" + "\n`{}`".format(footer), files = attachlist) #type:ignore
-            else:
-                await channel.send("***Shared By** {}*\n".format(msg.author.mention) + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{}".format(msg.content) + "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" + "\n`{}`".format(footer))
+            await channel.send(msgContent)
+
         await ctx.message.delete()
 
 def setup(bot):
