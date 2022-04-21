@@ -38,7 +38,7 @@ class Stats(commands.Cog):
     @commands.has_role("Mod")
     @commands.command()
     async def updatePlayingReaver(self, ctx:commands.Context):
-        """Update stats channel of people playing Reaver"""
+        """Update stats channel of people playing Reaver (needs Mod role)"""
         assert self.bot.ReaverGuild is not None
         numPlayingReaver = len(list(filter(Filters.filterPlayingReaver,self.bot.ReaverGuild.members)))
         target = self.bot.ReaverChannels["Playing Reaver"]
@@ -49,7 +49,7 @@ class Stats(commands.Cog):
     @commands.has_role("Mod")
     @commands.command()
     async def updateOnline(self, ctx:commands.Context):
-        """Update stats channel of people online"""
+        """Update stats channel of people online (needs Mod role)"""
         assert self.bot.ReaverGuild is not None
         numOnline = len(list(filter(Filters.filterOnlineMembers,self.bot.ReaverGuild.members)))
         target = self.bot.ReaverChannels["Online"]
@@ -60,7 +60,7 @@ class Stats(commands.Cog):
     @commands.has_role("Mod")
     @commands.command()
     async def updateMembers(self, ctx:commands.Context):
-        """Update stats channel of members in server"""
+        """Update stats channel of members in server (needs Mod role)"""
         assert self.bot.ReaverGuild is not None
         numMembers = len(list(filter(Filters.filterNonBots,self.bot.ReaverGuild.members)))
         target = self.bot.ReaverChannels["Members"]

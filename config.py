@@ -7,7 +7,8 @@ ACTIVE_COGS = [
     "cogs.stats",
     "cogs.tasks",
     "cogs.pin",
-    "cogs.events"  
+    "cogs.events",
+    "cogs.info"  
 ]
 
 # Server ID of server reaver-bot is residing in
@@ -24,3 +25,12 @@ STATS_CHANNELS = [
 SERVER_ROLES = [
     ("Playing Reaver", int(965941196134432808))
 ] #type: t.List[t.Tuple[str, int]]
+
+# Hard Coded Links (user-friendly-name, link)
+SERVER_LINKS = [
+    ("Steam", "https://store.steampowered.com/app/1890950/REAVER/"),
+    ("Itch", "https://crunkz.itch.io/reaver"),
+    ("Twitter", "https://twitter.com/crunkzah"),
+    ("Youtube", "https://www.youtube.com/user/ddevit016ru"),
+    ("Reddit", "https://www.reddit.com/r/reaver/")
+]

@@ -16,7 +16,7 @@ def main():
     logging.info("Instantiating Bot")
     intents = Intents().all()
     bot = ReaverBot(command_prefix= COMMAND_PREFIX, intents = intents)
-
+    bot.remove_command("help") # Overwrite default help command
 
     logging.info("Loading cogs...")
     for cog in ACTIVE_COGS:
