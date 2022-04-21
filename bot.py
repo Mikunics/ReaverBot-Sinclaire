@@ -1,8 +1,11 @@
+
 import nextcord
 import logging
+import asyncio
 
 from typing import Dict, Tuple, Type, Any
 
+from nextcord import Guild
 from nextcord.ext import commands
 from nextcord.abc import GuildChannel
 from nextcord.role import Role
@@ -15,26 +18,44 @@ class ReaverBot(commands.Bot):
     ReaverChannels = {} #type: Dict[str, Tuple[str, GuildChannel]]
     ReaverRoles = {} #type: Dict[str, Role]
 
-    async def on_ready(self):
-        self.ReaverGuild = nextcord.utils.get(self.guilds, id = PRIMARY_SERVER)
+    async def fetchReaverGuild(self):
+        guild = nextcord.utils.get(self.guilds, id = PRIMARY_SERVER)
+        if guild is None: 
+            raise Exception("Reaver server cannot be found!")
+        return guild
 
-        assert self.ReaverGuild is not None, "Reaver server cannot be found"
-
+    async def fetchReaverChannels(self, guild: Guild):
+        channelDict = {}
+        assert guild is not None
         for name, prefix, id in STATS_CHANNELS:
-            targetChannel = nextcord.utils.get(self.ReaverGuild.channels, id = id)
+            targetChannel = nextcord.utils.get(guild.channels, id = id)
             if targetChannel is None:
                 logging.error("Could not find channel: {}".format(name))
                 continue
-            self.ReaverChannels[name] = (prefix, targetChannel)
+            channelDict[name] = (prefix, targetChannel)
+        return channelDict
 
+    async def fetchReaverRoles(self, guild: Guild):
+        roleDict = {}
+        assert guild is not None
         for name, id in SERVER_ROLES:
-            targetRole = nextcord.utils.get(self.ReaverGuild.roles, id = id)
+            targetRole = nextcord.utils.get(guild.roles, id = id)
             if targetRole is None:
                 logging.error("Could not find role: {}".format(name))
                 continue
-            self.ReaverRoles[name] = targetRole
+            roleDict[name] = targetRole
+        return roleDict
 
+    async def on_ready(self):
+        self.ReaverGuild = await self.fetchReaverGuild()
+        fetched = await asyncio.gather(self.fetchReaverChannels(self.ReaverGuild), self.fetchReaverRoles(self.ReaverGuild))
+        self.ReaverChannels, self.ReaverRoles = fetched
+        
         logging.info("Bot is ready to reave!")
+
+    async def on_command_error(self, ctx:commands.Context, err):
+        logging.error("Command error: {0} [author: {1.author}][cmd: {1.command}]".format(err, ctx))
+        await ctx.send("**{0.mention}, I don't recognize what you're trying to say**".format(ctx.author))
 
 
     
