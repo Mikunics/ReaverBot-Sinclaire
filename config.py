@@ -8,7 +8,8 @@ ACTIVE_COGS = [
     "cogs.tasks",
     "cogs.pin",
     "cogs.events",
-    "cogs.info"  
+    "cogs.info",
+    "cogs.fun"  
 ]
 
 # Server ID of server reaver-bot is residing in
