@@ -1,16 +1,17 @@
 
+from discord import CustomActivity
 import nextcord
 import logging
 import asyncio
 
 from typing import Dict, Tuple, Type, Any
 
-from nextcord import Guild
+from nextcord import Guild, Game
 from nextcord.ext import commands
 from nextcord.abc import GuildChannel
 from nextcord.role import Role
 
-from config import STATS_CHANNELS, PRIMARY_SERVER, SERVER_ROLES
+from config import COMMAND_PREFIX, STATS_CHANNELS, PRIMARY_SERVER, SERVER_ROLES
 
 class ReaverBot(commands.Bot):
 
@@ -50,7 +51,7 @@ class ReaverBot(commands.Bot):
         self.ReaverGuild = await self.fetchReaverGuild()
         fetched = await asyncio.gather(self.fetchReaverChannels(self.ReaverGuild), self.fetchReaverRoles(self.ReaverGuild))
         self.ReaverChannels, self.ReaverRoles = fetched
-        
+        await self.change_presence(activity=Game(name = "{}help".format(COMMAND_PREFIX)))
         logging.info("Bot is ready to reave!")
 
     async def on_command_error(self, ctx:commands.Context, err):
