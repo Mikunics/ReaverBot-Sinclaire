@@ -29,9 +29,9 @@ class Pins(commands.Cog):
         if not isinstance(channel, TextChannel):
             return
 
-        formatString = "***Shared By** {author}*\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{content}\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+        formatString = "***Pinned By** {pinner}*,    ***Shared By** {author}*\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{content}\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
 
-        msgContent = formatString.format(author = msg.author.mention, content = msg.content)
+        msgContent = formatString.format(pinner = ctx.author.mention ,author = msg.author.mention, content = msg.content)
 
         if footer is not None:
             msgContent += "\n`{}`".format(footer)
