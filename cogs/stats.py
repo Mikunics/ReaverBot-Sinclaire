@@ -1,10 +1,6 @@
-import logging
-
 from nextcord import ActivityType, Status
 from nextcord.ext import commands
 from nextcord.member import Member
-
-from config import STATS_CHANNELS
 
 from bot import ReaverBot
 

@@ -3,8 +3,6 @@ import nextcord
 from nextcord import TextChannel
 from nextcord.ext import commands
 
-from config import STATS_CHANNELS
-
 from bot import ReaverBot
 
 class Channel(commands.Converter):

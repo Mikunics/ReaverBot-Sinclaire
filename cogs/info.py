@@ -1,8 +1,5 @@
-import logging
-
-from nextcord import ActivityType, Status, Embed
+from nextcord import Embed
 from nextcord.ext import commands
-from nextcord.member import Member
 
 from config import SERVER_LINKS, COMMAND_PREFIX
 

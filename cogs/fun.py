@@ -6,9 +6,6 @@ import aiohttp
 
 from nextcord import File
 from nextcord.ext import commands
-from nextcord.member import Member
-
-from config import SERVER_LINKS, COMMAND_PREFIX
 
 from bot import ReaverBot
 

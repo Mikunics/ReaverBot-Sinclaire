@@ -33,5 +33,9 @@ SERVER_LINKS = [
     ("Itch", "https://crunkz.itch.io/reaver"),
     ("Twitter", "https://twitter.com/crunkzah"),
     ("Youtube", "https://www.youtube.com/user/ddevit016ru"),
-    ("Reddit", "https://www.reddit.com/r/reaver/")
+    ("Reddit", "https://www.reddit.com/r/reaver/"),
+    ("Wiki", "https://reavergame.fandom.com/wiki/Reaver_Wiki"),
+    ("Speedruns", "https://www.speedrun.com/reaver")
 ]
+
+RSS_FEED = "https://steamcommunity.com/games/1890950/rss"

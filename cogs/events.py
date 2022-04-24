@@ -1,7 +1,5 @@
-import logging
 from nextcord.ext import commands
 from cogs.stats import Filters
-from config import STATS_CHANNELS
 from bot import ReaverBot
 
 class Events(commands.Cog):

@@ -4,7 +4,6 @@ import nextcord
 
 from nextcord.ext import commands, tasks
 
-from config import STATS_CHANNELS, SERVER_ROLES
 from cogs.stats import Filters
 from bot import ReaverBot
 
